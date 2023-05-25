@@ -5,9 +5,15 @@ async function createProduct(req: Request, res: Response) {
   const product = req.body;
   const response = await productService.createProduct(product);
   console.log(response.data, 'response.data');
-  res.status(201).json(response.data);
+  return res.status(201).json(response.data);
+}
+
+async function getProducts(req: Request, res: Response) {
+  const response = await productService.getProducts();
+  return res.status(200).json(response.data);
 }
 
 export default {
   createProduct,
+  getProducts,
 };
