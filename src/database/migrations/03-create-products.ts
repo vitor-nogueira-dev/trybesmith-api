@@ -1,5 +1,5 @@
 import { DataTypes, Model, QueryInterface } from 'sequelize';
-import { Product } from 'src/types/Product';
+import { Product } from '../../types/Product';
 
 export default {
   up(queryInterface: QueryInterface) {
