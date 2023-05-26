@@ -41,4 +41,27 @@ async function searchProducts(productIds: number[]): Promise<ReturnProduct[]> {
   return products as ReturnProduct[];
 }
 
-export default { getOrders };
+async function createOrder(
+  order: OrderInputtableTypes,
+): Promise<ServiceResponse<OrderInputtableTypes>> {
+  const newOrder = await OrderModel.create({ userId: +order.userId });
+  const { id } = newOrder.dataValues;
+
+  const productIds = order.productIds || [];
+  const products = await searchProducts(productIds);
+
+  const productsToInsert = products.filter(Boolean).map((product) => ({
+    name: product.name,
+    price: product.price,
+    orderId: id,
+  }));
+
+  await ProductModel.bulkCreate(productsToInsert);
+
+  return {
+    status: 'SUCCESS',
+    data: { userId: order.userId, productIds },
+  };
+}
+
+export default { getOrders, createOrder };
