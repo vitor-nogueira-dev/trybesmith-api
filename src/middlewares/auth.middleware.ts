@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
+import jwtUtil from 'src/utils/jwt.util';
 import UserModel from '../database/models/user.model';
 
 class CustomError extends Error {
@@ -14,6 +15,14 @@ class CustomError extends Error {
 function tokenEmptyField(token: string): void {
   if (!token) {
     throw new CustomError(401, 'Token not found');
+  }
+}
+
+async function userIsLogged(token: string) {
+  const decoded = jwtUtil.verify(token);
+  const user = await UserModel.findOne({ where: { username: decoded.username } });
+  if (!user) {
+    throw new CustomError(401, 'Invalid token');
   }
 }
 
@@ -48,6 +57,7 @@ function validInsertOrders(req: Request, res: Response, next: NextFunction) {
     const { authorization } = req.headers;
     if (authorization !== undefined) {
       tokenEmptyField(authorization);
+      userIsLogged(authorization);
     }
     validUserIdBody(userId);
     validProductIds(productIds);
