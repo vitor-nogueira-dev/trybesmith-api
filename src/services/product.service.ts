@@ -4,7 +4,6 @@ import { ServiceResponse } from '../types/ServiceResponse';
 
 async function createProduct(product: Product): Promise<ServiceResponse<Product>> {
   const insertedProduct = await ProductModel.create(product);
-  console.log(insertedProduct, 'insertedProduct');
   const response: ServiceResponse<Product> = {
     status: 'SUCCESS',
     data: insertedProduct.dataValues as Product,

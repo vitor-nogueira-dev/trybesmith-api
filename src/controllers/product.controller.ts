@@ -4,7 +4,6 @@ import productService from '../services/product.service';
 async function createProduct(req: Request, res: Response) {
   const product = req.body;
   const response = await productService.createProduct(product);
-  console.log(response.data, 'response.data');
   return res.status(201).json(response.data);
 }
 
