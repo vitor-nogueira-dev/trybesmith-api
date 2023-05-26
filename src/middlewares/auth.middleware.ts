@@ -11,6 +11,12 @@ class CustomError extends Error {
   }
 }
 
+function tokenEmptyField(token: string): void {
+  if (!token) {
+    throw new CustomError(401, 'Token not found');
+  }
+}
+
 export default {
   validInsertOrders,
 };
