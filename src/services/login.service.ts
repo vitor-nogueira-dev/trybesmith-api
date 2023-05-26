@@ -12,9 +12,9 @@ async function verifyLogin(login: Login): Promise<ServiceResponse<Token>> {
     return { status: 'UNAUTHORIZED', data: { message: 'Username or password invalid' } };
   }
 
-  const { id, username } = foundUser.dataValues;
+  const { username } = foundUser.dataValues;
 
-  const token = jwtUtil.sign({ id, username });
+  const token = jwtUtil.sign({ username });
 
   return { status: 'SUCCESS', data: { token } };
 }
