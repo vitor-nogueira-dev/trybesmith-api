@@ -8,7 +8,7 @@ async function createProduct(req: Request, res: Response) {
   return res.status(201).json(response.data);
 }
 
-async function getProducts(req: Request, res: Response) {
+async function getProducts(_req: Request, res: Response) {
   const response = await productService.getProducts();
   return res.status(200).json(response.data);
 }
