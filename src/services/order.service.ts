@@ -35,7 +35,7 @@ async function searchProducts(productIds: number[]): Promise<ReturnProduct[]> {
       const product = await ProductModel.findByPk(productId, {
         attributes: ['name', 'price'],
       });
-      return product ? { name: product.dataValues.name, price: product.dataValues.price } : null;
+      return product && { name: product.dataValues.name, price: product.dataValues.price };
     }),
   );
   return products as ReturnProduct[];
@@ -47,7 +47,7 @@ async function createOrder(
   const newOrder = await OrderModel.create({ userId: +order.userId });
   const { id } = newOrder.dataValues;
 
-  const productIds = order.productIds || [];
+  const productIds = order.productIds as number[];
   const products = await searchProducts(productIds);
 
   const productsToInsert = products.filter(Boolean).map((product) => ({
@@ -64,4 +64,4 @@ async function createOrder(
   };
 }
 
-export default { getOrders, createOrder };
+export default { getOrders, createOrder, searchProducts };
