@@ -30,6 +30,18 @@ function validUserIdBody(userId: number) {
   }
 }
 
+function validProductIds(productIds: number[]) {
+  if (!productIds) {
+    throw new CustomError(400, '"productIds" is required');
+  }
+  if (!Array.isArray(productIds)) {
+    throw new CustomError(400, '"productIds" must be an array');
+  }
+  if (productIds.length === 0) {
+    throw new CustomError(400, '"productIds" must include only numbers');
+  }
+}
+
 export default {
   validInsertOrders,
 };
