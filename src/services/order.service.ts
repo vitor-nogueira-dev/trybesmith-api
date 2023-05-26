@@ -1,7 +1,10 @@
 import Sequelize from 'sequelize';
 import { ServiceResponse } from '../types/ServiceResponse';
 import ProductModel from '../database/models/product.model';
-import OrderModel, { OrderSequelizeModel } from '../database/models/order.model';
+import OrderModel, {
+  OrderInputtableTypes,
+  OrderSequelizeModel,
+} from '../database/models/order.model';
 
 async function getOrders(): Promise<ServiceResponse<OrderSequelizeModel[]>> {
   const orders = await OrderModel.findAll({
@@ -25,4 +28,16 @@ async function getOrders(): Promise<ServiceResponse<OrderSequelizeModel[]>> {
   return response;
 }
 
-export default { getOrders };
+async function createOrder(
+  order: OrderInputtableTypes,
+): Promise<ServiceResponse<OrderSequelizeModel>> {
+  const { userId } = order;
+  const newOrder = await OrderModel.create({ userId });
+  console.log(newOrder, 'newOrder');
+  return {
+    status: 'SUCCESS',
+    data: newOrder,
+  };
+}
+
+export default { getOrders, createOrder };
