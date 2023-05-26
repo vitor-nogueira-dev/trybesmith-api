@@ -42,6 +42,22 @@ function validProductIds(productIds: number[]) {
   }
 }
 
+function validInsertOrders(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { userId, productIds } = req.body;
+    const { authorization } = req.headers;
+    if (authorization !== undefined) {
+      tokenEmptyField(authorization);
+    }
+    validUserIdBody(userId);
+    validProductIds(productIds);
+    return next();
+  } catch (error) {
+    const { statusCode, message } = error as CustomError;
+    return res.status(statusCode).json({ message });
+  }
+}
+
 export default {
   validInsertOrders,
 };
