@@ -17,6 +17,19 @@ function tokenEmptyField(token: string): void {
   }
 }
 
+function validUserIdBody(userId: number) {
+  if (!userId) {
+    throw new CustomError(400, '"userId" is required');
+  }
+  if (typeof userId !== 'number') {
+    throw new CustomError(400, '"userId" must be a number');
+  }
+  const userExists = UserModel.findByPk(userId);
+  if (!userExists) {
+    throw new CustomError(404, 'User does not exist');
+  }
+}
+
 export default {
   validInsertOrders,
 };
